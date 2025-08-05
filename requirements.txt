@@ -1,0 +1,7 @@
+google-generativeai
+pandas
+matplotlib
+seaborn
+fpdf2
+streamlit
+requests

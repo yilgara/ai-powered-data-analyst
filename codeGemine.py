@@ -805,9 +805,7 @@ def main():
                 st.markdown(f"**Cavab:** {answer}")
                 st.markdown("---")
 
-        st.write(cleaned_df.columns)
-        st.write(cleaned_df.isna().sum())
-        st.write(cleaned_df.nunique(dropna=False))
+       
 
 
 

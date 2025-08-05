@@ -4,4 +4,5 @@ matplotlib
 seaborn
 fpdf2
 streamlit
+tabulate
 requests

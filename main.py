@@ -145,7 +145,7 @@ def main():
 
 
             if cat_cols and numeric_cols:
-                st.subheader("Rəqəmsal vs Kateqorial Analiz")
+                sst.subheader("Numerical vs Categorical Analysis")
 
                 x_cat = st.selectbox("Select a categorical column", cat_cols)
                 y_num = st.selectbox("Select a numeric column", numeric_cols)
@@ -168,13 +168,13 @@ def main():
 
 
             if len(cat_cols) >= 2:
-                st.subheader("Kateqorial vs Kateqorial Analiz")
-                x_cat = st.selectbox("Kateqorial sütun seçin (X oxu)", cat_cols, key="cat_vs_cat_x")
-                y_cat = st.selectbox("Kateqorial sütun seçin (Y üçün)", [col for col in cat_cols if col != x_cat],
-                                     key="cat_vs_cat_y")
+                st.subheader("Categorical vs Categorical Analysis")
+                x_cat = st.selectbox("Select a categorical column (X-axis)", cat_cols, key="cat_vs_cat_x")
+                y_cat = st.selectbox("Select a categorical column (Y-axis)", [col for col in cat_cols if col != x_cat], key="cat_vs_cat_y")
+                
                 if x_cat and y_cat:
 
-                    chart_type = st.radio("Qrafik növünü seçin:", ["Stacked Bar", "Heatmap"], horizontal=True)
+                    chart_type = st.radio("Select chart type:", ["Stacked Bar", "Heatmap"], horizontal=True)
 
                     if chart_type == "Stacked Bar":
                         fig5, insight5 = plot_stacked_bar(cleaned_df, x_cat, y_cat)
@@ -192,16 +192,16 @@ def main():
 
 
             if len(numeric_cols) >= 2:
-                st.subheader("Rəqəmsal vs Rəqəmsal Analiz")
-                x_num = st.selectbox("Rəqəmsal sütun seçin (X oxu)", numeric_cols, key="num_vs_num_x")
-                y_num = st.selectbox("Rəqəmsal sütun seçin (Y oxu)", [col for col in numeric_cols if col != x_num],
-                                     key="num_vs_num_y")
+                st.subheader("Numerical vs Numerical Analysis")
+                x_num = st.selectbox("Select a numerical column (X-axis)", numeric_cols, key="num_vs_num_x")
+                y_num = st.selectbox("Select a numerical column (Y-axis)", [col for col in numeric_cols if col != x_num], key="num_vs_num_y")
 
                 if x_num and y_num:
                     fig6, insight6, ax = plot_scatter(cleaned_df, x_num, y_num)
 
 
-                    add_reg = st.checkbox("Regressiya xətti əlavə et", value=False)
+                    add_reg = st.checkbox("Add regression line", value=False)
+                    
                     if add_reg:
                         sns.regplot(data=cleaned_df, x=x_num, y=y_num, scatter=False, ax=ax, color='red')
 

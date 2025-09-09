@@ -112,8 +112,6 @@ def main():
                 except Exception:
                     pass
 
-        st.write("### Original Data")
-        st.dataframe(df)
 
         filters = {}
 
@@ -149,10 +147,9 @@ def main():
                     ]
 
 
-        st.write("### Filtered Data")
-        st.dataframe(filtered_df)
+       
 
-        st.write("### Cleaned Data")
+        st.write("### Filtered & Cleaned Data")
         cleaned_df = filtered_df.copy()
         cleaned_df = clean_data(cleaned_df)
         st.dataframe(cleaned_df)

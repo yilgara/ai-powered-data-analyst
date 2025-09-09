@@ -8,9 +8,9 @@ def plot_bar_chart(df, col):
     fig, ax = plt.subplots()
     value_counts = df[col].value_counts()
     sns.barplot(x=value_counts.index, y=value_counts.values, ax=ax)
-    ax.set_title(f"{col} kateqoriyasının tezliyi")
+    ax.set_title(f"Frequency of {col} category")
     ax.set_xlabel(col)
-    ax.set_ylabel("Say")
+    ax.set_ylabel("Count")
     plt.xticks(rotation=45)
 
     insight = [f"Most frequent category: '{value_counts.idxmax()}' ({value_counts.max()} times).",
@@ -22,9 +22,9 @@ def plot_bar_chart(df, col):
 def plot_histogram(df, col):
     fig, ax = plt.subplots()
     sns.histplot(df[col].dropna(), bins=30, kde=True, ax=ax)
-    ax.set_title(f"{col} sütununun histogramı")
+    ax.set_title(f"Histogram of {col} column")
     ax.set_xlabel(col)
-    ax.set_ylabel("Say")
+    ax.set_ylabel("Count")
     mean = df[col].mean()
     median = df[col].median()
     std = df[col].std()
@@ -102,7 +102,7 @@ def plot_heat_map(df, cat1, cat2):
     fig, ax = plt.subplots()
     sns.heatmap(ctab, annot=True, fmt="d", cmap="Blues", ax=ax)
 
-    ax.set_title(f"{cat1} və {cat2} üzrə Heat Map")
+    ax.set_title(f"Heatmap of {cat1} vs {cat2}")
     ax.set_xlabel(cat1)
     ax.set_ylabel(cat2)
 
@@ -127,12 +127,12 @@ def plot_heat_map(df, cat1, cat2):
 def plot_scatter(df, num1, num2):
     fig, ax = plt.subplots()
     sns.scatterplot(x=df[num1], y=df[num2], ax=ax)
-    ax.set_title(f"{num1} və {num2} üzrə Scatter Plot")
+    ax.set_title(f"Scatter Plot of {num1} vs {num2}")
     ax.set_xlabel(num1)
     ax.set_ylabel(num2)
 
     corr = df[[num1, num2]].corr().iloc[0, 1]
-    insight = [f"{num1} ilə {num2} arasında korrelyasiya: {corr:.2f}."]
+    insight = [f"Correlation between {num1} and {num2}: {corr:.2f}."]
 
     if abs(corr) > 0.7:
         insight.append("There is a strong correlation between these columns.")
@@ -148,7 +148,7 @@ def plot_scatter(df, num1, num2):
 def plot_boxplot(df, num, cat):
     fig, ax = plt.subplots()
     sns.boxplot(x=cat, y=num, data=df, ax=ax)
-    ax.set_title(f"{num} dağılımı üzrə {cat}")
+    ax.set_title(f"Distribution of {num} by {cat}")
     plt.xticks(rotation=45)
 
     group_means = df.groupby(cat)[num].mean()
@@ -166,7 +166,7 @@ def plot_boxplot(df, num, cat):
 def plot_violinplot(df, num, cat):
     fig, ax = plt.subplots()
     sns.violinplot(x=cat, y=num, data=df, ax=ax)
-    ax.set_title(f"{num} sıxlığı üzrə {cat}")
+    ax.set_title(f"Density of {num} by {cat}")
     plt.xticks(rotation=45)
 
     group_means = df.groupby(cat)[num].mean()
@@ -184,7 +184,7 @@ def plot_violinplot(df, num, cat):
 def plot_barplot_num_vs_cat(df, num, cat):
     fig, ax = plt.subplots()
     sns.barplot(x=df[cat], y=df[num], ax=ax, estimator="mean")
-    ax.set_title(f"{cat} üzrə {num} orta dəyəri")
+    ax.set_title(f"Average {num} by {cat}")
 
     group_means = df.groupby(cat)[num].mean()
     most = group_means.idxmax()

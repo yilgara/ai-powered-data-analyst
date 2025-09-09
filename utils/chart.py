@@ -75,7 +75,7 @@ def plot_stacked_bar(df, cat1, cat2):
     ctab = pd.crosstab(df[cat1], df[cat2])
     ctab.plot(kind='bar', stacked=True, ax=ax)
 
-    ax.set_title(f"{cat1} və {cat2} üzrə Stacked Bar Chart")
+    ax.set_title(f"Stacked Bar Chart of {cat1} vs {cat2}")
     ax.set_xlabel(cat1)
     ax.set_ylabel(cat2)
 

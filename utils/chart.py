@@ -13,8 +13,8 @@ def plot_bar_chart(df, col):
     ax.set_ylabel("Say")
     plt.xticks(rotation=45)
 
-    insight = [f"Ən çox görülən kateqoriya: '{value_counts.idxmax()}'({value_counts.max()} dəfə).",
-               f"Ən az görülən kateqoriya: '{value_counts.idxmin()}'({value_counts.min()} dəfə)."]
+    insight = [f"Most frequent category: '{value_counts.idxmax()}' ({value_counts.max()} times).",
+           f"Least frequent category: '{value_counts.idxmin()}' ({value_counts.min()} times)."]
     return fig, insight
 
 
@@ -29,13 +29,13 @@ def plot_histogram(df, col):
     median = df[col].median()
     std = df[col].std()
 
-    insight = [f"Ortalama: {mean:.2f}", f"Median: {median:.2f}", f"Standart Deviation: {std:.2f}"]
+    insight = [f"Mean: {mean:.2f}", f"Median: {median:.2f}", f"Standard Deviation: {std:.2f}"]
     if mean > median:
-        insight.append("Dağılım sağa meyllidir (right-skewed).")
+        insight.append("The distribution is right-skewed.")
     elif mean < median:
-        insight.append("Dağılım sola meyllidir (left-skewed).")
+        insight.append("The distribution is left-skewed.")
     else:
-        insight.append("Dağılım təxmini simmetrikdir.")
+        insight.append("The distribution is approximately symmetric.")
     return fig, insight
 
 
@@ -47,7 +47,7 @@ def plot_time_series(df, dt_col, num_col):
     ts_df[dt_col] = pd.to_datetime(ts_df[dt_col])
     ax.plot(ts_df[dt_col], ts_df[num_col])
 
-    ax.set_title(f"{num_col} dəyişməsi zaman üzrə")
+    ax.set_title(f"{num_col} change over time")
     ax.set_xlabel(dt_col)
     ax.set_ylabel(num_col)
 
@@ -62,9 +62,10 @@ def plot_time_series(df, dt_col, num_col):
     min_time = ts_df.loc[min_idx, dt_col].strftime('%Y-%m-%d')
     fig.autofmt_xdate()
 
-    direction = f"{num_col} zamanla artma meyli göstərir." if trend > 0 else f"{num_col} zamanla azalma meyli göstərir." if trend < 0 else f"{num_col} zamanla sabit qalır."
-    insight = [direction, f"{num_col} maksimum {max_val} dəyərinə {max_time} tarixində çatdı.",
-               f"{num_col} minimum {min_val} dəyərinə {min_time} tarixində çatdı."]
+    direction = f"{num_col} shows an increasing trend over time." if trend > 0 else f"{num_col} shows a decreasing trend over time." if trend < 0 else f"{num_col} remains stable over time."
+    insight = [direction, 
+           f"{num_col} reached its maximum value of {max_val} on {max_time}.",
+           f"{num_col} reached its minimum value of {min_val} on {min_time}."]
     return fig, insight
 
 
@@ -85,10 +86,10 @@ def plot_stacked_bar(df, cat1, cat2):
     least_common = ctab.stack()[ctab.stack() == min_val].index.tolist()
 
     most_common_str = ", ".join([f"{x} & {y}" for x, y in most_common])
-    most_comb = f"Ən çox yayılmış kombinasiyalar: {most_common_str} ({max_val} dəfə)."
+    most_comb = f"Most common combinations: {most_common_str} ({max_val} times)."
 
     least_common_str = ", ".join([f"{x} & {y}" for x, y in least_common])
-    least_comb = f"Ən az yayılmış kombinasiyalar: {least_common_str} ({min_val} dəfə)."
+    least_comb = f"Least common combinations: {least_common_str} ({min_val} times)."
 
     insight = [most_comb, least_comb]
 
@@ -112,10 +113,11 @@ def plot_heat_map(df, cat1, cat2):
     least_common = ctab.stack()[ctab.stack() == min_val].index.tolist()
 
     most_common_str = ", ".join([f"{x} & {y}" for x, y in most_common])
-    most_comb = f"Ən çox yayılmış kombinasiyalar: {most_common_str} ({max_val} dəfə)."
+    most_comb = f"Most common combinations: {most_common_str} ({max_val} times)."
+  
 
     least_common_str = ", ".join([f"{x} & {y}" for x, y in least_common])
-    least_comb = f"Ən az yayılmış kombinasiyalar: {least_common_str} ({min_val} dəfə)."
+    least_comb = f"Least common combinations: {least_common_str} ({min_val} times)."
 
     insight = [most_comb, least_comb]
     return fig, insight
@@ -133,11 +135,12 @@ def plot_scatter(df, num1, num2):
     insight = [f"{num1} ilə {num2} arasında korrelyasiya: {corr:.2f}."]
 
     if abs(corr) > 0.7:
-        insight.append("Bu sütunlar arasında güclü əlaqə var.")
+        insight.append("There is a strong correlation between these columns.")
     elif abs(corr) > 0.4:
-        insight.append("Orta səviyyəli korrelyasiya mövcuddur.")
+        insight.append("There is a moderate correlation.")
     else:
-        insight.append("Əlaqə zəifdir və ya mövcud deyil.")
+        insight.append("The correlation is weak or nonexistent.")
+        
     return fig, insight, ax
 
 
@@ -153,8 +156,8 @@ def plot_boxplot(df, num, cat):
     least = group_means.idxmin()
 
     insight = [
-        f"{most} kateqoriyası ən yüksək orta {num} dəyərinə malikdir ({group_means[most]:.2f}).",
-        f"{least} kateqoriyası ən aşağı orta {num} dəyərinə malikdir ({group_means[least]:.2f})."
+        f"The {most} category has the highest average {num} value ({group_means[most]:.2f}).",
+        f"The {least} category has the lowest average {num} value ({group_means[least]:.2f})."
     ]
     return fig, insight
 
@@ -171,8 +174,8 @@ def plot_violinplot(df, num, cat):
     least = group_means.idxmin()
 
     insight = [
-        f"{most} kateqoriyası ən yüksək orta {num} dəyərinə malikdir ({group_means[most]:.2f}).",
-        f"{least} kateqoriyası ən aşağı orta {num} dəyərinə malikdir ({group_means[least]:.2f})."
+        f"The {most} category has the highest average {num} value ({group_means[most]:.2f}).",
+        f"The {least} category has the lowest average {num} value ({group_means[least]:.2f})."
     ]
     return fig, insight
 
@@ -188,8 +191,8 @@ def plot_barplot_num_vs_cat(df, num, cat):
     least = group_means.idxmin()
 
     insight = [
-        f"{most} kateqoriyası ən yüksək orta {num} dəyərinə malikdir ({group_means[most]:.2f}).",
-        f"{least} kateqoriyası ən aşağı orta {num} dəyərinə malikdir ({group_means[least]:.2f})."
+        f"The {most} category has the highest average {num} value ({group_means[most]:.2f}).",
+        f"The {least} category has the lowest average {num} value ({group_means[least]:.2f})."
     ]
     return fig, insight
 

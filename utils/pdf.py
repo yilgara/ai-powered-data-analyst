@@ -43,19 +43,17 @@ def create_pdf(plot_files, report_title, insights=None, output_file="gpt_data_re
     pdf.set_auto_page_break(auto=True, margin=15)
 
 
-    font_path = download_dejavu_font()
-    pdf.add_font("FreeSans", "", font_path, uni=True)
 
     # First page: Title and Date
     pdf.add_page()
-    pdf.set_font("FreeSans", '', 24)
+    pdf.set_font("Times", '', 24)
     pdf.cell(0, 40, report_title, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='C')
 
     
     today = datetime.today()
     date_str = today.strftime("Date: %d %B %Y")
 
-    pdf.set_font("FreeSans", '', 14)
+    pdf.set_font("Times", '', 14)
     pdf.cell(0, 10, date_str, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='C')
 
 
@@ -85,10 +83,10 @@ def create_pdf(plot_files, report_title, insights=None, output_file="gpt_data_re
         pdf.set_y(current_y + scaled_height + 10)
 
         # Key Insights - bold header + bullet points
-        pdf.set_font("FreeSans", '', 14)
+        pdf.set_font("Times", '', 14)
         pdf.cell(0, 10, "Key Points:", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
-        pdf.set_font("FreeSans", '', 12)
+        pdf.set_font("Times", '', 12)
         # If insights[i] is a list, print bullets
         page_width = pdf.w - 2 * pdf.l_margin  # usable width within margins
 
@@ -105,7 +103,7 @@ def create_pdf(plot_files, report_title, insights=None, output_file="gpt_data_re
     for page_num in range(1, num_pages + 1):
         pdf.page = page_num
         pdf.set_y(-15)
-        pdf.set_font("FreeSans", '', 10)
+        pdf.set_font("Times", '', 10)
         pdf.cell(0, 10, f"Page {page_num} / {num_pages}", align='C')
 
     pdf.output(output_file)

@@ -14,18 +14,7 @@ def read_file(file):
 
 
 
-from utils.chart import *
-from utils.prompt import *
-from utils.pdf import create_pdf
 
-
-def read_file(file):
-    if file.name.endswith('.csv'):
-        return pd.read_csv(file)
-    elif file.name.endswith('.xlsx') or file.name.endswith('.xls'):
-        return pd.read_excel(file)
-    else:
-        raise ValueError("Unsupported file format: Only .csv and .xlsx are supported.")
 
 
 def is_likely_identifier(series, max_unique_ratio=0.7, min_length=2):

@@ -40,7 +40,6 @@ def build_prompt(df, user_question):
             - Instead, store a plain string response as the value in the 'answers' dictionary, where the key is the original question and the value is the corresponding answer
 
         Respond ONLY with Python code blocks.
-        Important: Please write all **strings, key and value pairs in dictionary** in **Azerbaijani language**, but keep all variable names (like `answers`) in English.
     """
 
 

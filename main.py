@@ -28,7 +28,7 @@ def read_file(file):
         raise ValueError("Unsupported file format: Only .csv and .xlsx are supported.")
 
 
-def is_likely_identifier(series, max_unique_ratio=0.9, min_length=3):
+def is_likely_identifier(series, max_unique_ratio=0.7, min_length=2):
     """
     Detect if a column is likely an identifier (ID, name, etc.)
     """
@@ -38,6 +38,8 @@ def is_likely_identifier(series, max_unique_ratio=0.9, min_length=3):
     
     unique_count = series.nunique()
     unique_ratio = unique_count / total_count
+    st.write(series)
+    st.write(unique_ratio)
     
     # High uniqueness ratio suggests it's an identifier
     if unique_ratio >= max_unique_ratio:
@@ -63,7 +65,7 @@ def is_likely_identifier(series, max_unique_ratio=0.9, min_length=3):
 
 
 
-def filter_columns_for_visualization(df, max_categorical_unique=20, max_unique_ratio=0.9):
+def filter_columns_for_visualization(df, max_categorical_unique=20, max_unique_ratio=0.7):
     """
     Filter out columns that are not suitable for visualization
     """

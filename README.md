@@ -67,7 +67,7 @@ An intelligent Streamlit application that performs automated exploratory data an
 
 ---
 
-## 🎮 Usage
+## Usage
 
 ### 1. **Upload Your Data**
 - Supported formats: CSV, Excel (.xlsx, .xls)

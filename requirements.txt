@@ -7,3 +7,5 @@ streamlit
 tabulate
 requests
 openpyxl
+xlrd
+

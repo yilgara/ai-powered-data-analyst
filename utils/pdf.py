@@ -6,34 +6,6 @@ from datetime import datetime
 from fpdf.enums import XPos, YPos
 
 
-def download_dejavu_font():
-    url = "https://ftp.gnu.org/gnu/freefont/freefont-ttf-20120503.zip"
-    zip_path = "freefont.zip"
-    font_folder = "freefont-20120503"
-    font_file = "FreeSans.ttf"
-
-    if not os.path.exists(font_file):
-        # Download the zip file if not exists
-        if not os.path.exists(zip_path):
-            r = requests.get(url)
-            if r.status_code == 200:
-                with open(zip_path, "wb") as f:
-                    f.write(r.content)
-            else:
-                raise Exception("Failed to download font zip")
-
-        # Extract the zip and get font file
-        import zipfile
-        import shutil
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall()
-        extracted_font_path = os.path.join(font_folder, font_file)
-        if os.path.exists(extracted_font_path):
-            shutil.move(extracted_font_path, font_file)
-        else:
-            raise FileNotFoundError(f"{extracted_font_path} not found")
-    return font_file
-
 
 
 

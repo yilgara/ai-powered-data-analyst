@@ -51,14 +51,9 @@ def create_pdf(plot_files, report_title, insights=None, output_file="gpt_data_re
     pdf.set_font("FreeSans", '', 24)
     pdf.cell(0, 40, report_title, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='C')
 
-    months_az = {
-        "January": "Yanvar", "February": "Fevral", "March": "Mart", "April": "Aprel",
-        "May": "May", "June": "İyun", "July": "İyul", "August": "Avqust",
-        "September": "Sentyabr", "October": "Oktyabr", "November": "Noyabr", "December": "Dekabr"
-    }
+    
     today = datetime.today()
-    month_az = months_az[today.strftime("%B")]
-    date_str = f"Tarix: {today.day} {month_az} {today.year}"
+    date_str = today.strftime("Date: %d %B %Y")
 
     pdf.set_font("FreeSans", '', 14)
     pdf.cell(0, 10, date_str, new_x=XPos.LMARGIN, new_y=YPos.NEXT, align='C')
@@ -91,7 +86,7 @@ def create_pdf(plot_files, report_title, insights=None, output_file="gpt_data_re
 
         # Key Insights - bold header + bullet points
         pdf.set_font("FreeSans", '', 14)
-        pdf.cell(0, 10, "Əsas Məqamlar:", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
+        pdf.cell(0, 10, "Key Points:", new_x=XPos.LMARGIN, new_y=YPos.NEXT)
 
         pdf.set_font("FreeSans", '', 12)
         # If insights[i] is a list, print bullets
@@ -111,7 +106,7 @@ def create_pdf(plot_files, report_title, insights=None, output_file="gpt_data_re
         pdf.page = page_num
         pdf.set_y(-15)
         pdf.set_font("FreeSans", '', 10)
-        pdf.cell(0, 10, f"Səhifə {page_num} / {num_pages}", align='C')
+        pdf.cell(0, 10, f"Page {page_num} / {num_pages}", align='C')
 
     pdf.output(output_file)
     print(f"Report saved as: {output_file}")

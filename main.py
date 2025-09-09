@@ -10,7 +10,99 @@ def read_file(file):
     elif file.name.endswith('.xlsx') or file.name.endswith('.xls'):
         return pd.read_excel(file)
     else:
+        raise ValueError("Unsupported file format: Only .csv, .xls and .xlsx are supported.")
+
+
+
+from utils.chart import *
+from utils.prompt import *
+from utils.pdf import create_pdf
+
+
+def read_file(file):
+    if file.name.endswith('.csv'):
+        return pd.read_csv(file)
+    elif file.name.endswith('.xlsx') or file.name.endswith('.xls'):
+        return pd.read_excel(file)
+    else:
         raise ValueError("Unsupported file format: Only .csv and .xlsx are supported.")
+
+
+def is_likely_identifier(series, max_unique_ratio=0.9, min_length=3):
+    """
+    Detect if a column is likely an identifier (ID, name, etc.)
+    """
+    total_count = len(series.dropna())
+    if total_count == 0:
+        return False
+    
+    unique_count = series.nunique()
+    unique_ratio = unique_count / total_count
+    
+    # High uniqueness ratio suggests it's an identifier
+    if unique_ratio >= max_unique_ratio:
+        return True
+    
+    # Check for common identifier patterns
+    if series.dtype == 'object':
+        # Check if it looks like IDs (many values start with numbers/letters followed by numbers)
+        sample_values = series.dropna().astype(str).head(100)
+        id_pattern_count = 0
+        for val in sample_values:
+            # Check for patterns like: ID123, USER_456, ABC123, etc.
+            if any(char.isdigit() for char in val) and any(char.isalpha() for char in val):
+                id_pattern_count += 1
+            # Check for purely numeric strings that might be IDs
+            elif val.isdigit() and len(val) >= min_length:
+                id_pattern_count += 1
+        
+        if id_pattern_count / len(sample_values) > 0.7:
+            return True
+    
+    return False
+
+
+
+def filter_columns_for_visualization(df, max_categorical_unique=20, max_unique_ratio=0.9):
+    """
+    Filter out columns that are not suitable for visualization
+    """
+    suitable_numeric = []
+    suitable_categorical = []
+    suitable_datetime = []
+    
+    excluded_columns = []
+    
+    for col in df.columns:
+        dtype = df[col].dtype
+        
+        # Check if it's likely an identifier
+        if is_likely_identifier(df[col], max_unique_ratio):
+            excluded_columns.append((col, "High uniqueness - likely identifier"))
+            continue
+        
+        if pd.api.types.is_datetime64_any_dtype(dtype):
+            suitable_datetime.append(col)
+        elif pd.api.types.is_numeric_dtype(dtype):
+            # For numeric columns, also check if they have too many unique values
+            # and might be IDs disguised as numbers
+            unique_count = df[col].nunique()
+            total_count = len(df[col].dropna())
+            
+            if total_count > 0 and (unique_count / total_count) >= max_unique_ratio:
+                excluded_columns.append((col, "High uniqueness - likely numeric identifier"))
+            else:
+                suitable_numeric.append(col)
+        elif dtype == 'object' or pd.api.types.is_string_dtype(dtype):
+            unique_count = df[col].nunique()
+            
+            # Skip categorical columns with too many unique values
+            if unique_count > max_categorical_unique:
+                excluded_columns.append((col, f"Too many categories ({unique_count})"))
+            else:
+                suitable_categorical.append(col)
+    
+    return suitable_numeric, suitable_categorical, suitable_datetime, excluded_columns
 
 
 
@@ -101,6 +193,33 @@ def main():
         cleaned_df = filtered_df.copy()
         cleaned_df = clean_data(cleaned_df)
         st.dataframe(cleaned_df)
+
+
+        numeric_cols, cat_cols, datetime_cols, excluded_cols = filter_columns_for_visualization(cleaned_df)
+
+        # Show excluded columns info
+        if excluded_cols:
+            with st.expander("ℹ️ Columns excluded from visualization"):
+                for col, reason in excluded_cols:
+                    st.write(f"**{col}**: {reason}")
+                st.info("These columns were automatically excluded because they appear to be identifiers or have too many unique values for meaningful visualization.")
+
+        # Show column summary
+        st.write("### Column Summary for Visualization")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            st.metric("Numeric Columns", len(numeric_cols))
+            if numeric_cols:
+                st.write("Available:", ", ".join(numeric_cols[:3]) + ("..." if len(numeric_cols) > 3 else ""))
+        with col2:
+            st.metric("Categorical Columns", len(cat_cols))
+            if cat_cols:
+                st.write("Available:", ", ".join(cat_cols[:3]) + ("..." if len(cat_cols) > 3 else ""))
+        with col3:
+            st.metric("DateTime Columns", len(datetime_cols))
+            if datetime_cols:
+                st.write("Available:", ", ".join(datetime_cols[:3]) + ("..." if len(datetime_cols) > 3 else ""))
+
 
 
         st.write("### Charts for filtered and cleaned data")

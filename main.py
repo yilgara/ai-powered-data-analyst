@@ -68,16 +68,16 @@ def main():
                 min_date = df[col].min().date()
                 max_date = df[col].max().date()
                 date_range = st.date_input(
-                    f"{col} sütununa əsasən filtrləyin.", value=[min_date, max_date]
+                    f"Filter according to the {col} column", value=[min_date, max_date]
                 )
                 if len(date_range) == 2:
                     start_date, end_date = date_range
                     if start_date == end_date:
-                        st.warning("Zəhmət olmasa, keçərli aralıq üçün fərqli bir bitiş tarixi seçin.")
+                        st.warning("Please select a different end date for a valid range.")
                     else:
                         filters[col] = (start_date, end_date)
                 else:
-                    st.warning("Zəhmət olmasa həm başlanğıc, həm də bitiş tarixini seçin.")
+                    st.warning("Please select both a start and an end date.")
 
 
 
@@ -103,14 +103,14 @@ def main():
         st.dataframe(cleaned_df)
 
 
-        st.write("### Filtr edilmiş və təmizlənmiş məlumatlar üçün qrafiklər")
+        st.write("### Charts for filtered and cleaned data")
 
         if not cleaned_df.empty:
             # Example 1: Histogram for numeric column
             numeric_cols = cleaned_df.select_dtypes(include='number').columns.tolist()
             if numeric_cols:
-                st.subheader("Rəqəmsal Analiz - Histogram")
-                selected_col = st.selectbox("Histogram üçün ədədi sütun seçin", numeric_cols)
+                st.subheader("Numerical Analysis - Histogram")
+                selected_col = st.selectbox("Select a numeric column for the histogram", numeric_cols)
                 fig1, insight1 = plot_histogram(cleaned_df, selected_col)
                 all_figures.append(fig1)
                 st.pyplot(fig1)
@@ -121,9 +121,9 @@ def main():
             # Example 2: Time Series Plot for datetime column
             datetime_cols = cleaned_df.select_dtypes(include='datetime').columns.tolist()
             if datetime_cols and numeric_cols:
-                st.subheader("Zaman seriyası qrafiki")
-                dt_col = st.selectbox("Tarix/zaman sütunu", datetime_cols)
-                num_col = st.selectbox("Ədədi sütun", numeric_cols, key="ts_plot")
+                st.subheader("Time Series Chart")
+                dt_col = st.selectbox("Date/Time column", datetime_cols)
+                num_col = st.selectbox("Numeric column", numeric_cols, key="ts_plot")
                 fig2, insight2 = plot_time_series(cleaned_df, dt_col, num_col)
                 all_figures.append(fig2)
                 st.pyplot(fig2)
@@ -134,8 +134,8 @@ def main():
             # Example 3: Bar Plot for category counts
             cat_cols = cleaned_df.select_dtypes(include='object').columns.tolist()
             if cat_cols:
-                st.subheader("Kateqorial Analiz - Bar Plot")
-                cat_col = st.selectbox("Sütun üzrə sayların bar qrafiki", cat_cols)
+                st.subheader("Categorical Analysis - Bar Plot")
+                cat_col = st.selectbox("Select a categorical column for the bar chart", cat_cols)
                 fig3, insight3 = plot_bar_chart(cleaned_df, cat_col)
                 all_figures.append(fig3)
                 st.pyplot(fig3)
@@ -147,10 +147,10 @@ def main():
             if cat_cols and numeric_cols:
                 st.subheader("Rəqəmsal vs Kateqorial Analiz")
 
-                x_cat = st.selectbox("Kateqorial sütun seçin", cat_cols)
-                y_num = st.selectbox("Ədədi sütun seçin", numeric_cols)
+                x_cat = st.selectbox("Select a categorical column", cat_cols)
+                y_num = st.selectbox("Select a numeric column", numeric_cols)
 
-                plot_type = st.radio("Qrafik növünü seçin:", ["Box Plot", "Violin Plot", "Bar Plot"], horizontal=True)
+                plot_type = st.radio("Select plot type:", ["Box Plot", "Violin Plot", "Bar Plot"], horizontal=True)
 
                 if plot_type == "Box Plot":
                     fig4, insight4 = plot_boxplot(cleaned_df, y_num, x_cat)
@@ -213,40 +213,40 @@ def main():
                         st.info(i)
 
         st.markdown("---")
-        st.subheader("Hesabat Yarat")
+        st.subheader("Create Report")
 
         available_graphs = get_available_graphs(cat_cols, numeric_cols, datetime_cols)
 
         selected_graphs = st.multiselect(
-            "PDF-ə daxil etmək istədiyiniz spesifik qrafik nümunələrini seçin:",
+            "Select specific graph examples to include in the PDF:",
             options=available_graphs
         )
 
         if selected_graphs:
-            report_title = st.text_input("Hesabat üçün başlıq daxil edin:", value="Data Analiz Hesabatı")
+            report_title = st.text_input("Enter a title for the report:", value="Data Analiz Hesabatı")
 
-            if st.button("Hesabat PDF Yarat"):
+            if st.button("Generate PDF Report"):
 
                 all_insights, all_graphs = get_graphs_and_insights(selected_graphs, cleaned_df)
                 pdf_data = create_pdf(all_graphs, report_title, all_insights)
                 with open(pdf_data, "rb") as f:
                     pdf_bytes = f.read()
-                st.success("Hesabat yaradıldı!")
+                st.success("Report generated!")
 
                 st.download_button(
-                    label="PDF Hesabatı Yüklə",
+                    label="Download PDF Report",
                     data=pdf_bytes,
                     file_name="selected_graphs_report.pdf",
                     mime="application/pdf"
                 )
 
         st.markdown("---")
-        st.subheader("Bir neçə sual ver (GPT tərəfindən cavablandırılacaq)")
+        st.subheader("Ask a few questions (GPT will answer)")
         if "question_count" not in st.session_state:
             st.session_state.question_count = 1
 
         # Button to add a new question section
-        if st.button("+ Yeni Sual"):
+        if st.button("+ New Question"):
             st.session_state.question_count += 1
 
         # Collect all questions from user
@@ -257,23 +257,23 @@ def main():
                 questions.append(question)
 
 
-        if st.button("Cavab Al"):
+        if st.button("Get Answer"):
             if questions:
                 combined_questions = "\n".join([f"{i + 1}. {q}" for i, q in enumerate(questions)])
-                with st.spinner("GPT cavabı hazırlanır..."):
+                with st.spinner("Preparing GPT response..."):
                     gpt_answer = get_response(combined_questions, cleaned_df)
                     answers = parse_gpt_response(gpt_answer, cleaned_df)
                     st.session_state["last_answers"] = answers
 
 
             else:
-                st.warning("Zəhmət olmasa bir sual daxil edin.")
+                st.warning("Please enter a question.")
 
         if "last_answers" in st.session_state:
-            st.subheader("Cavablar:")
+            st.subheader("Answers:")
             for question, answer in st.session_state["last_answers"].items():
-                st.markdown(f"**Sual:** {question}")
-                st.markdown(f"**Cavab:** {answer}")
+                st.markdown(f"**Question:** {question}")
+                st.markdown(f"**Answer:** {answer}")
                 st.markdown("---")
 
        

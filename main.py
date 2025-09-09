@@ -145,7 +145,7 @@ def main():
 
 
             if cat_cols and numeric_cols:
-                sst.subheader("Numerical vs Categorical Analysis")
+                st.subheader("Numerical vs Categorical Analysis")
 
                 x_cat = st.selectbox("Select a categorical column", cat_cols)
                 y_num = st.selectbox("Select a numeric column", numeric_cols)

@@ -38,28 +38,11 @@ def is_likely_identifier(series, max_unique_ratio=0.7, min_length=2):
     
     unique_count = series.nunique()
     unique_ratio = unique_count / total_count
-    st.write(series)
-    st.write(unique_ratio)
+    
     
     # High uniqueness ratio suggests it's an identifier
     if unique_ratio >= max_unique_ratio:
         return True
-    
-    # Check for common identifier patterns
-    if series.dtype == 'object':
-        # Check if it looks like IDs (many values start with numbers/letters followed by numbers)
-        sample_values = series.dropna().astype(str).head(100)
-        id_pattern_count = 0
-        for val in sample_values:
-            # Check for patterns like: ID123, USER_456, ABC123, etc.
-            if any(char.isdigit() for char in val) and any(char.isalpha() for char in val):
-                id_pattern_count += 1
-            # Check for purely numeric strings that might be IDs
-            elif val.isdigit() and len(val) >= min_length:
-                id_pattern_count += 1
-        
-        if id_pattern_count / len(sample_values) > 0.7:
-            return True
     
     return False
 
@@ -85,24 +68,13 @@ def filter_columns_for_visualization(df, max_categorical_unique=20, max_unique_r
         
         if pd.api.types.is_datetime64_any_dtype(dtype):
             suitable_datetime.append(col)
+        
         elif pd.api.types.is_numeric_dtype(dtype):
-            # For numeric columns, also check if they have too many unique values
-            # and might be IDs disguised as numbers
-            unique_count = df[col].nunique()
-            total_count = len(df[col].dropna())
-            
-            if total_count > 0 and (unique_count / total_count) >= max_unique_ratio:
-                excluded_columns.append((col, "High uniqueness - likely numeric identifier"))
-            else:
-                suitable_numeric.append(col)
+            suitable_numeric.append(col)
+        
         elif dtype == 'object' or pd.api.types.is_string_dtype(dtype):
             unique_count = df[col].nunique()
-            
-            # Skip categorical columns with too many unique values
-            if unique_count > max_categorical_unique:
-                excluded_columns.append((col, f"Too many categories ({unique_count})"))
-            else:
-                suitable_categorical.append(col)
+            suitable_categorical.append(col)
     
     return suitable_numeric, suitable_categorical, suitable_datetime, excluded_columns
 
@@ -228,7 +200,7 @@ def main():
 
         if not cleaned_df.empty:
             # Example 1: Histogram for numeric column
-            numeric_cols = cleaned_df.select_dtypes(include='number').columns.tolist()
+            
             if numeric_cols:
                 st.subheader("Numerical Analysis - Histogram")
                 selected_col = st.selectbox("Select a numeric column for the histogram", numeric_cols)
@@ -240,7 +212,7 @@ def main():
                     st.info(i)
 
             # Example 2: Time Series Plot for datetime column
-            datetime_cols = cleaned_df.select_dtypes(include='datetime').columns.tolist()
+           
             if datetime_cols and numeric_cols:
                 st.subheader("Time Series Chart")
                 dt_col = st.selectbox("Date/Time column", datetime_cols)
@@ -253,7 +225,7 @@ def main():
                     st.info(i)
 
             # Example 3: Bar Plot for category counts
-            cat_cols = cleaned_df.select_dtypes(include='object').columns.tolist()
+
             if cat_cols:
                 st.subheader("Categorical Analysis - Bar Plot")
                 cat_col = st.selectbox("Select a categorical column for the bar chart", cat_cols)

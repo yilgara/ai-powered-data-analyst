@@ -223,7 +223,7 @@ def main():
         )
 
         if selected_graphs:
-            report_title = st.text_input("Enter a title for the report:", value="Data Analiz Hesabatı")
+            report_title = st.text_input("Enter a title for the report:", value="Data Analysis Report")
 
             if st.button("Generate PDF Report"):
 

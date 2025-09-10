@@ -16,10 +16,10 @@ def auto_detect_dates(df):
 
 
 def apply_filters(df):
-    setup_date_filters(df)
+    filters = setup_date_filters(df)
         
     filtered_df = df.copy()
-    for col, (start_date, end_date) in self.filters.items():
+    for col, (start_date, end_date) in filters.items():
         if pd.api.types.is_datetime64_any_dtype(df[col].dtype):
             start = pd.to_datetime(start_date)
             end = pd.to_datetime(end_date)
@@ -32,7 +32,7 @@ def apply_filters(df):
 
 
 def setup_date_filters(df):
-    self.filters = {}
+    filters = {}
         
     for col in df.columns:
         if pd.api.types.is_datetime64_any_dtype(df[col].dtype):
@@ -51,6 +51,8 @@ def setup_date_filters(df):
                     st.warning("Please select a different end date for a valid range.")
             else:
                 st.warning("Please select both a start and an end date.")
+
+    return filters
 
 
 def show_column_summary(columns_info):

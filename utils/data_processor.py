@@ -37,15 +37,18 @@ def filter_columns_for_visualization(df, max_categorical_unique=20, max_unique_r
     for col in df.columns:
         dtype = df[col].dtype
         
+        if pd.api.types.is_datetime64_any_dtype(dtype):
+            suitable_datetime.append(col)
+            continue
+            
         # Check if it's likely an identifier
         if is_likely_identifier(df[col], max_unique_ratio):
             excluded_columns.append((col, "High uniqueness - likely identifier"))
             continue
         
-        if pd.api.types.is_datetime64_any_dtype(dtype):
-            suitable_datetime.append(col)
+       
         
-        elif pd.api.types.is_numeric_dtype(dtype):
+        if pd.api.types.is_numeric_dtype(dtype):
             suitable_numeric.append(col)
         
         elif dtype == 'object' or pd.api.types.is_string_dtype(dtype):

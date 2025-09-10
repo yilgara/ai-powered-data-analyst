@@ -1,10 +1,9 @@
 import streamlit as st
-from typing import Dict, List
 from utils.chart import get_available_graphs, get_graphs_and_insights
 from utils.pdf import create_pdf
 
 
-def show_report_section(self, columns_info, df):
+def show_report_section(columns_info, df):
     st.markdown("---")
     st.subheader("Create Report")
         
@@ -24,12 +23,12 @@ def show_report_section(self, columns_info, df):
                                        value="Data Analysis Report")
             
         if st.button("Generate PDF Report"):
-            self.generate_pdf_report(selected_graphs, df, report_title)
+            generate_pdf_report(selected_graphs, df, report_title)
 
 
 
 
- def generate_pdf_report(self, selected_graphs, df, report_title):
+ def generate_pdf_report(selected_graphs, df, report_title):
       
     try:
         all_insights, all_graphs = get_graphs_and_insights(selected_graphs, df)

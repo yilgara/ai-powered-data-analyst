@@ -50,7 +50,7 @@ def create_bar_chart(df, cat_cols):
         st.subheader("Categorical Analysis - Bar Plot")
         cat_col = st.selectbox("Select a categorical column for the bar chart", cat_cols)
         fig, insight = plot_bar_chart(df, cat_col)
-        self._add_visualization(fig, insight)
+        add_visualization(fig, insight)
 
 
 def create_num_vs_cat_analysis(df, cat_cols, numeric_cols):
@@ -70,7 +70,7 @@ def create_num_vs_cat_analysis(df, cat_cols, numeric_cols):
         elif plot_type == "Bar Plot":
             fig, insight = plot_barplot_num_vs_cat(df, y_num, x_cat)
             
-         add_visualization(fig, insight)
+        add_visualization(fig, insight)
 
 
 def create_cat_vs_cat_analysis(df, cat_cols):
@@ -88,7 +88,7 @@ def create_cat_vs_cat_analysis(df, cat_cols):
             else:  # Heatmap
                 fig, insight = plot_heat_map(df, x_cat, y_cat)
                 
-             add_visualization(fig, insight)
+            add_visualization(fig, insight)
 
 
 def create_num_vs_num_analysis(df, numeric_cols):

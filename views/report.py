@@ -28,8 +28,7 @@ def show_report_section(columns_info, df):
 
 
 
- def generate_pdf_report(selected_graphs, df, report_title):
-      
+def generate_pdf_report(selected_graphs, df, report_title):
     try:
         all_insights, all_graphs = get_graphs_and_insights(selected_graphs, df)
         pdf_data = create_pdf(all_graphs, report_title, all_insights)

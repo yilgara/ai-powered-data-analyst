@@ -17,12 +17,12 @@ def initialize_session_state():
 
 
 def show_question_interface():
-    # Buttons for adding/clearing questions
+     # Buttons for adding/clearing questions
      col1, col2 = st.columns([1, 1])
         
      with col1:
-          if st.button("➕ Add Question"):
-          st.session_state.question_count += 1
+          if st.button("+ Add Question"):
+               st.session_state.question_count += 1
         
      with col2:
           if st.button("Clear All"):

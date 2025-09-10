@@ -116,42 +116,22 @@ def apply_categorical_filters(df):
                     st.write(f"{col}: No values to filter")
                     continue
                 
-                # Show filter options
-                filter_type = st.radio(
-                    f"Filter type for {col}:",
-                    ["Include", "Exclude"],
-                    key=f"filter_type_{col}",
-                    horizontal=True
+                
+                
+               selected_values = st.multiselect(
+                    f"Include {col}:",
+                    options=unique_values,
+                    default=unique_values,  # All selected by default
+                    key=f"include_{col}"
                 )
-                
-                if filter_type == "Include":
-                    selected_values = st.multiselect(
-                        f"Include {col}:",
-                        options=unique_values,
-                        default=unique_values,  # All selected by default
-                        key=f"include_{col}"
-                    )
                     
-                    if selected_values:
-                        # Convert back to original dtypes for comparison
-                        mask = filtered_df[col].astype(str).isin(selected_values) | filtered_df[col].isna()
-                        filtered_df = filtered_df[mask]
-                    else:
-                        # Nothing selected = empty result
-                        filtered_df = filtered_df.iloc[0:0]
-                
-                else:  # Exclude
-                    excluded_values = st.multiselect(
-                        f"Exclude {col}:",
-                        options=unique_values,
-                        default=[],  # Nothing excluded by default
-                        key=f"exclude_{col}"
-                    )
-                    
-                    if excluded_values:
-                        # Exclude selected values
-                        mask = ~filtered_df[col].astype(str).isin(excluded_values) | filtered_df[col].isna()
-                        filtered_df = filtered_df[mask]
+                if selected_values:
+                    # Convert back to original dtypes for comparison
+                    mask = filtered_df[col].astype(str).isin(selected_values) | filtered_df[col].isna()
+                    filtered_df = filtered_df[mask]
+                else:
+                    # Nothing selected = empty result
+                    filtered_df = filtered_df.iloc[0:0]
             
             except Exception as e:
                 st.error(f"Error processing categorical column {col}: {str(e)}")

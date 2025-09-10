@@ -10,7 +10,7 @@ def read_file(file):
         raise ValueError("Unsupported file format: Only .csv, .xls and .xlsx are supported.")
 
 
-def is_likely_identifier(series, max_unique_ratio=0.7, min_length=2):
+def is_likely_identifier(series, max_unique_ratio=0.7):
     total_count = len(series.dropna())
     if total_count == 0:
         return False
@@ -24,7 +24,7 @@ def is_likely_identifier(series, max_unique_ratio=0.7, min_length=2):
 
 
 
-def filter_columns_for_visualization(df, max_categorical_unique=20, max_unique_ratio=0.7):
+def filter_columns_for_visualization(df, max_categorical_unique=30, max_unique_ratio=0.7):
    
     suitable_numeric = []
     suitable_categorical = []

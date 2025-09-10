@@ -6,11 +6,6 @@ from views.qa_system import show_qa_section
 from views.data import apply_filters, auto_detect_dates, show_column_summary
 
 
-
-
-
-
-
 def main():
     st.title("AI Data Analysis & PDF Report Generator")
     uploaded_file = st.file_uploader("Upload a CSV or Excel file", type=["csv", "xlsx", "xls"])
@@ -44,14 +39,6 @@ def main():
         # Q&A section
         show_qa_section(filtered_df)
         
-
-    
-    
-
-       
-
-
-
 
 if __name__ == "__main__":
     main()

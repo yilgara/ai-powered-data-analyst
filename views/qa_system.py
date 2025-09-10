@@ -49,12 +49,12 @@ def show_question_interface():
                     if st.button("Delete", key=f"del_{i}", help="Delete this question"):
                         delete_question(i)
                         st.rerun()
-            else:
+          else:
                 # First question cannot be deleted
-                question = st.text_input(f"Question {i + 1}:", key=f"q_{i}")
+               question = st.text_input(f"Question {i + 1}:", key=f"q_{i}")
             
-            if question.strip():
-                questions.append(question)
+          if question.strip():
+               questions.append(question)
         
   
         

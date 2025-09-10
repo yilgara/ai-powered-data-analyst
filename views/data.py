@@ -118,7 +118,7 @@ def apply_categorical_filters(df):
                 
                 
                 
-               selected_values = st.multiselect(
+                selected_values = st.multiselect(
                     f"Include {col}:",
                     options=unique_values,
                     default=unique_values,  # All selected by default

@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from data_processor import is_likely_identifier
+from utils.data_processor import is_likely_identifier
 
 
 def auto_detect_dates(df):

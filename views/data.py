@@ -93,7 +93,7 @@ def apply_categorical_filters(df):
     for col in df.columns:
         if (df[col].dtype == 'object' or pd.api.types.is_string_dtype(df[col])):
             unique_count = df[col].nunique()
-            if 2 <= unique_count <= 50:  # Skip binary or too many categories
+            if 2 <= unique_count <= 40:  # Skip binary or too many categories
                 cat_cols.append(col)
     
     if not cat_cols:
@@ -165,9 +165,7 @@ def apply_numerical_filters(df):
     num_cols = []
     for col in df.columns:
         if pd.api.types.is_numeric_dtype(df[col]):
-            # Skip if likely identifier (high uniqueness)
-            if not is_likely_identifier(df[col]):
-                num_cols.append(col)
+            num_cols.append(col)
     
     if not num_cols:
         return df

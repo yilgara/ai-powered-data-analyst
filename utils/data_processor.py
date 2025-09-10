@@ -20,7 +20,7 @@ def is_likely_identifier(series, max_unique_ratio=0.7, min_length=2):
     
     
     # High uniqueness ratio suggests it's an identifier
-    return unique_ratio >= max_unique_ratio:
+    return unique_ratio >= max_unique_ratio
 
 
 

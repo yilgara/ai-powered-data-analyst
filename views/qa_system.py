@@ -7,7 +7,6 @@ def show_qa_section(df):
     st.subheader("Ask a few questions (GPT will answer)")
         
     initialize_session_state()
-    show_question_interface()
     handle_answer_generation(df)
     display_previous_answers()
 

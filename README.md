@@ -11,7 +11,7 @@ An intelligent Streamlit application that performs automated exploratory data an
 - **Intelligent Column Detection**: Automatically identifies and excludes identifier columns (IDs, names, etc.) based on uniqueness ratio
 - **Automatic Data Cleaning**: Handles missing values, removes constant columns, and filters out low-quality rows
 - **Data Type Recognition**: Automatically detects and converts datetime columns
-- **Advanced Filtering**: Interactive date range filtering for temporal data
+- **Multi-Level Filtering**:  Date ranges, categorical include/exclude, numerical ranges
 
 ### Comprehensive Visualizations
 - **Numerical Analysis**: Histograms with statistical insights
@@ -76,7 +76,7 @@ An intelligent Streamlit application that performs automated exploratory data an
 ### 2. **Data Processing**
 - View filtered, and cleaned versions of your data
 - The system automatically excludes identifier columns (IDs, names) that aren't suitable for visualization
-- Apply date filters if your data contains temporal information
+- Apply date, categorical and numerical filters if your data contains temporal information
 
 ### 3. **Explore Visualizations**
 - **Numerical Analysis**: Generate histograms for numerical columns
@@ -99,13 +99,19 @@ An intelligent Streamlit application that performs automated exploratory data an
 
 ```
 automated-data-analysis/
-├── main.py                 # Main Streamlit application
+├── main.py                         # Main Streamlit application
 ├── utils/
-│   ├── chart.py           # Chart generation functions
-│   ├── prompt.py          # AI prompt handling
-│   └── pdf.py             # PDF report generation
-├── requirements.txt       # Python dependencies
-└── README.md             # This file
+│   ├── chart.py                    # Chart generation functions
+│   ├── prompt.py                   # AI prompt handling
+│   ├── data_processor.py           # Data cleaning
+│   └── pdf.py                      # PDF report generation
+├── views/
+│   ├── data.py                     # Streamlit interface for data section
+│   ├── qa_system.py                # Streamlit interface for Q&A section
+│   ├── report.py                   # Streamlit interface for report section
+│   └── visualization_manager.py    # Streamlit interface that covers all generated graphs and insights
+├── requirements.txt                # Python dependencies
+└── README.md                       # This file
 ```
 
 ---

@@ -44,7 +44,7 @@ def show_question_interface():
                col_q, col_del = st.columns([4, 1])
                with col_q:
                     question = st.text_input(f"Question {i + 1}:", key=f"q_{i}")
-                with col_del:
+               with col_del:
                     st.write("")  # Add some spacing
                     if st.button("Delete", key=f"del_{i}", help="Delete this question"):
                         delete_question(i)

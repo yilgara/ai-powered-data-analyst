@@ -231,11 +231,7 @@ def apply_numerical_filters(df):
     return filtered_df
 
 
-# Simplified setup function (if you want to keep it separate)
-def setup_date_filters(df):
-    """Legacy function - kept for compatibility"""
-    st.warning("⚠️ This function is deprecated. Use apply_date_filters() instead.")
-    return {}
+
 
 
 def show_column_summary(columns_info):

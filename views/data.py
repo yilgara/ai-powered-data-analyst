@@ -46,7 +46,7 @@ def setup_date_filters(df):
             if len(date_range) == 2:
                 start_date, end_date = date_range
                 if start_date != end_date:
-                    self.filters[col] = (start_date, end_date)
+                    filters[col] = (start_date, end_date)
                 else:
                     st.warning("Please select a different end date for a valid range.")
             else:

@@ -288,23 +288,6 @@ def generate_graph(df, desc):
     return None, ["Plot not supported."]
 
 
-def get_graphs_and_insightsxxx(selected_graphs, df):
-    all_insights = []
-    image_paths = []
-    for i in range(len(selected_graphs)):
-        g = selected_graphs[i]
-        data = generate_graph(df, g)
-        fig = data[0]
-        insight = data[1]
-
-        filename = f"chart_{i}.png"
-        fig.savefig(filename)
-        plt.close(fig)
-
-        all_insights.append(insight)
-        image_paths.append(filename)
-
-    return all_insights, image_paths
 
 
 def get_graphs_and_insights(selected_graphs, df):

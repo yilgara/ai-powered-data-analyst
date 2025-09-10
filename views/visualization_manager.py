@@ -24,7 +24,7 @@ def create_all_visualizations(df, columns_info):
         
 
 def add_visualization(fig, insight):
-    all_figures.append(fig)
+   
     st.pyplot(fig)
     for i in insight:
         st.info(i)

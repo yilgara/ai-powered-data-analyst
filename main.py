@@ -1,7 +1,7 @@
 import streamlit as st
 from utils.data_processor import read_file, filter_columns_for_visualization, clean_data
 from views.visualization_manager import create_all_visualizations
-from views.report_generator import show_report_section
+from views.report import show_report_section
 from views.qa_system import show_qa_section
 from views.data import apply_filters, auto_detect_dates, show_column_summary
 

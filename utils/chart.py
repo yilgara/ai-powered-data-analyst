@@ -288,7 +288,7 @@ def generate_graph(df, desc):
     return None, ["Plot not supported."]
 
 
-def get_graphs_and_insights(selected_graphs, df):
+def get_graphs_and_insightsxxx(selected_graphs, df):
     all_insights = []
     image_paths = []
     for i in range(len(selected_graphs)):
@@ -304,4 +304,30 @@ def get_graphs_and_insights(selected_graphs, df):
         all_insights.append(insight)
         image_paths.append(filename)
 
+    return all_insights, image_paths
+
+
+def get_graphs_and_insights(selected_graphs, df):
+    all_insights = []
+    image_paths = []
+    
+    for i in range(len(selected_graphs)):
+        g = selected_graphs[i]
+        data = generate_graph(df, g)
+        fig = data[0]
+        insight = data[1]
+        filename = f"chart_{i}.png"
+        
+        # Fix the cropping issue
+        fig.savefig(filename, 
+                   bbox_inches='tight',    # This prevents cropping!
+                   pad_inches=0.2,         # Add small padding
+                   dpi=300,               # High quality
+                   facecolor='white',     # White background
+                   edgecolor='none')      # No border
+        
+        plt.close(fig)
+        all_insights.append(insight)
+        image_paths.append(filename)
+    
     return all_insights, image_paths

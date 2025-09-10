@@ -8,7 +8,7 @@ def create_all_visualizations(df, columns_info):
         
     if df.empty:
         st.warning("No data available for visualization")
-        return [], []
+        return 
         
     numeric_cols = columns_info['numeric']
     cat_cols = columns_info['categorical']

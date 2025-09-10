@@ -18,29 +18,31 @@ def main():
         # Process data
         df = read_file(uploaded_file)
         df = auto_detect_dates(df)
+
+        # Clean data
+        cleaned_df = clean_data(df)
         
         # Apply filters
-        filtered_df = apply_filters(df)
+        filtered_df = apply_filters(cleaned_df)
         
-        # Clean data
-        cleaned_df = clean_data(filtered_df)
+        
         st.write("### Filtered & Cleaned Data")
-        st.dataframe(cleaned_df)
+        st.dataframe(filtered_df)
 
 
         # Get suitable columns
-        columns_info = filter_columns_for_visualization(cleaned_df)
+        columns_info = filter_columns_for_visualization(filtered_df)
         show_column_summary(columns_info)
 
 
         # Generate visualizations
-        create_all_visualizations(cleaned_df, columns_info)
+        create_all_visualizations(filtered_df, columns_info)
         
         # Report generation section
-        show_report_section(columns_info, cleaned_df)
+        show_report_section(columns_info, filtered_df)
         
         # Q&A section
-        show_qa_section(cleaned_df)
+        show_qa_section(filtered_df)
         
 
     
